@@ -6,7 +6,6 @@ use App\Models\Urun;
 use App\Models\UrunResim;
 use App\Models\Yorum;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
 
 class GetUrunDetayAction
 {
@@ -44,7 +43,7 @@ class GetUrunDetayAction
                 'fiyat' => $urun->fiyat,
                 'resimler' => $urun->resimler->map(fn (UrunResim $resim): array => [
                     'id' => $resim->id,
-                    'url' => Storage::disk('public')->url($resim->yol),
+                    'url' => $resim->url,
                 ])->values()->all(),
                 'yorumlar' => $urun->yorumlar->map(fn (Yorum $yorum): array => [
                     'id' => $yorum->id,
@@ -61,7 +60,7 @@ class GetUrunDetayAction
                 'ad' => $digerUrun->ad,
                 'fiyat' => $digerUrun->fiyat,
                 'resim_url' => $digerUrun->ilkResim
-                    ? Storage::disk('public')->url($digerUrun->ilkResim->yol)
+                    ? $digerUrun->ilkResim->url
                     : null,
             ])->values()->all(),
         ];

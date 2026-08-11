@@ -9,6 +9,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 test('commerce tables contain the expected columns', function () {
     expect(Schema::hasColumns('kullanicilar', [
@@ -62,6 +63,20 @@ test('commerce models store data and expose their relationships', function () {
         ->and($siparis->tarih)->toBeInstanceOf(CarbonInterface::class)
         ->and(Hash::check('gizli-parola', $kullanici->sifre))->toBeTrue()
         ->and($kullanici->toArray())->not->toHaveKey('sifre');
+});
+
+test('ürün resmi kaynağına göre doğru public URL üretir', function () {
+    $seederResmi = UrunResim::factory()->make([
+        'yol' => 'seeder_resimler/pekmez.jpeg',
+    ]);
+    $yuklenenResim = UrunResim::factory()->make([
+        'yol' => 'urunler/yuklenen-resim.jpg',
+    ]);
+
+    expect($seederResmi->url)->toBe(asset('seeder_resimler/pekmez.jpeg'))
+        ->and(parse_url($seederResmi->url, PHP_URL_PATH))->toBe('/seeder_resimler/pekmez.jpeg')
+        ->and($seederResmi->url)->not->toContain('/public/', '/storage/seeder_resimler/')
+        ->and($yuklenenResim->url)->toBe(Storage::disk('public')->url('urunler/yuklenen-resim.jpg'));
 });
 
 test('dependent records cascade while orders protect their history', function () {

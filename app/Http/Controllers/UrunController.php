@@ -11,7 +11,6 @@ use App\Http\Requests\Urun\StoreUrunRequest;
 use App\Http\Requests\Urun\UpdateUrunRequest;
 use App\Models\Urun;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -37,7 +36,7 @@ class UrunController extends Controller
                 'created_at' => $urun->created_at?->toIso8601String(),
                 'resimler' => $urun->resimler->map(fn ($resim): array => [
                     'id' => $resim->id,
-                    'url' => Storage::disk('public')->url($resim->yol),
+                    'url' => $resim->url,
                 ])->values()->all(),
             ]);
 

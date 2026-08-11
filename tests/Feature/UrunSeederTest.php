@@ -4,7 +4,7 @@ use App\Models\Urun;
 use App\Models\UrunResim;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\UrunSeeder;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 use function Pest\Laravel\assertModelExists;
 use function Pest\Laravel\seed;
@@ -55,7 +55,7 @@ test('ana veritabanı seederı örnek ürünleri ve resimlerini oluşturur', fun
             ->and($resim->urun_id)->toBe($urun->id)
             ->and($resim->yol)->toBe($beklenen['resim_yolu']);
 
-        Storage::disk('public')->assertExists($beklenen['resim_yolu']);
+        expect(File::exists(public_path($beklenen['resim_yolu'])))->toBeTrue();
     }
 });
 

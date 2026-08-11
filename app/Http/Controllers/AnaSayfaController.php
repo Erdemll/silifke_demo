@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Urun;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,7 +21,7 @@ class AnaSayfaController extends Controller
                 'ad' => $urun->ad,
                 'fiyat' => $urun->fiyat,
                 'resim_url' => $urun->ilkResim
-                    ? Storage::disk('public')->url($urun->ilkResim->yol)
+                    ? $urun->ilkResim->url
                     : null,
             ]);
 

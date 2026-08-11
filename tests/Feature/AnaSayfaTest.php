@@ -28,7 +28,7 @@ test('ana sayfa ürünleri en yeniden eskiye ilk resimleriyle sayfalar', functio
     $enYeniUrun = $urunler->last();
     $ilkResim = UrunResim::factory()->create([
         'urun_id' => $enYeniUrun->id,
-        'yol' => 'urunler/ilk-resim.webp',
+        'yol' => 'seeder_resimler/pekmez.jpeg',
     ]);
     UrunResim::factory()->create([
         'urun_id' => $enYeniUrun->id,
@@ -43,7 +43,7 @@ test('ana sayfa ürünleri en yeniden eskiye ilk resimleriyle sayfalar', functio
             ->where('urunler.data.0.id', $enYeniUrun->id)
             ->where('urunler.data.0.ad', $enYeniUrun->ad)
             ->where('urunler.data.0.fiyat', '149.90')
-            ->where('urunler.data.0.resim_url', Storage::disk('public')->url($ilkResim->yol))
+            ->where('urunler.data.0.resim_url', asset($ilkResim->yol))
             ->where('urunler.current_page', 1)
             ->where('urunler.last_page', 2)
             ->where('urunler.from', 1)

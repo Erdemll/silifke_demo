@@ -5,7 +5,6 @@ namespace App\Actions\Magaza;
 use App\Models\Urun;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 
 class SepetGetirAction
 {
@@ -56,7 +55,7 @@ class SepetGetirAction
                 'adet' => $adet,
                 'ara_toplam' => $this->kurusuFormatla($araToplamKurus),
                 'resim_url' => $urun->ilkResim
-                    ? Storage::disk('public')->url($urun->ilkResim->yol)
+                    ? $urun->ilkResim->url
                     : null,
             ];
         }

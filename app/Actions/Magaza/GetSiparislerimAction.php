@@ -4,7 +4,6 @@ namespace App\Actions\Magaza;
 
 use App\Models\Kullanici;
 use App\Models\Siparis;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * @phpstan-type SiparisSatiri array{
@@ -83,7 +82,7 @@ class GetSiparislerimAction
                 'id' => $siparis->urun->id,
                 'ad' => $siparis->urun->ad,
                 'resim_url' => $siparis->urun->ilkResim
-                    ? Storage::disk('public')->url($siparis->urun->ilkResim->yol)
+                    ? $siparis->urun->ilkResim->url
                     : null,
             ],
         ];
